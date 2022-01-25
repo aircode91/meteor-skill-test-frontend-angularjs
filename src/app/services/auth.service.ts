@@ -1,22 +1,28 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthService {
-  constructor() { }
+  constructor(
+    private _router: Router
+  ) { }
   
-  getUserDetails() {
-    return localStorage.getItem('token') ? JSON.stringify(localStorage.getItem('token')): null;
+  loggedIn() {
+    return !!localStorage.getItem('token');
   }
-
 
   setDataInLocalStorage(variableName:any, data:any) {
       localStorage.setItem(variableName, data);
   }
 
   getToken() {
-      return localStorage.getItem('accessToken');
+      return localStorage.getItem('token');
+  }
+
+
+  logout(){
+    localStorage.clear();
+    this._router.navigate(['']);
   }
 
   clearStorage() {

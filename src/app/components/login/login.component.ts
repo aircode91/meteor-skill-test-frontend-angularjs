@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
-import { ApiService } from '../../../services/api.service';
+import { AuthService } from '../../services/auth.service';
+import { ApiService } from '../../services/api.service';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
@@ -12,6 +12,7 @@ import { NgForm } from '@angular/forms';
 
 
 export class LoginComponent implements OnInit {
+
   isLogin: boolean = false;
   errorMessage = "";
 
@@ -41,35 +42,20 @@ export class LoginComponent implements OnInit {
           if (res) {
             console.log(res);
               this._auth.setDataInLocalStorage('token', res.accessToken);  
-              this._router.navigate(['']);
+              this._router.navigate(['/profile']);
           }
         });
       } catch (err) {
-        // console.log(error);
-
-        // this.errorMessage = error.message;
+        this.errorMessage = err;
       }
-      // if (res.status) { 
-      //   this._auth.setDataInLocalStorage('userData', JSON.stringify(res.data));  
-      //   } else { 
-
-      // }
-      // }, err => {
-      //   this.errorMessage = err['error'].message;
-      // });
     }
   }
 
   isUserLogin() {
-    console.log(this._auth.getUserDetails())
-    if (this._auth.getUserDetails() != null) {
+    if (this._auth.loggedIn()) {
       this.isLogin = true;
+      this._router.navigate(['/profile']);
     }
-  }
-
-  logout(){
-    this._auth.clearStorage()
-    this._router.navigate(['']);
   }
 
 }
